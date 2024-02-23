@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3Rpc2V0w6QiLCJpZCI6IjY1MDZkNWM4NzdmYTk2ZDNiZTIyZjYzZCIsImlhdCI6MTY5NTM5Njk2OSwiZXhwIjoxNjk1NDAwNTY5fQ.F-_n0AQ2_CKYeei8ZnEV-BPrK1MB0dDx9XCKnGy5ITs
+
+{
+  "title": "The Beginners Guide to React part 2",
+  "author": "Egghead.io",
+  "url": "https://egghead.io/courses/the-beginner-s-guide-to-react"
+}

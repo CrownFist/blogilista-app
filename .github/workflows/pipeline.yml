@@ -1,0 +1,67 @@
+name: CI/CD pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: install backend dependencies
+        run: npm install
+      - name: install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+      - name: lint backend
+        run: npm run lint
+      - name: lint frontend
+        working-directory: ./frontend
+        run: npm run lint
+      - name: build frontend
+        working-directory: ./frontend
+        run: npm run build
+      - name: backend unit tests
+        run: npm run test
+      - name: frontend component test
+        working-directory: ./frontend
+        run: npm run test
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ./frontend
+          command: npm run prod:e2e
+          start: |
+            cd ..
+            npm run start
+          wait-on: http://localhost:3003
+      - name: Discord success notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          username: ActionCat
+          avatarUrl: https://octodex.github.com/images/Professortocat_v2.png
+          color: '#77fc03'
+          description: The build was successful.
+          footer: 'Severity: Info'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Discord error notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          username: ActionCat
+          color: '#b50b2d'
+          avatarUrl: https://octodex.github.com/images/Professortocat_v2.png
+          description: 'The build failed.'
+          details: 'Commit SHA: ${{ github.sha }}'
+          footer: 'Severity: Error'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
