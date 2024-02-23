@@ -3,3 +3,4 @@ build
 dist/
 .eslintrc.cjs
 .env
+cypress.config.js
