@@ -15,6 +15,8 @@ describe('Blogilista ', function () {
       const user = Cypress.env('CYPRESS_USER')
       const pwd = Cypress.env('CYPRESS_PASSWORD')
 
+      console.log('user is ' + user)
+
       cy.contains('log in').click()
       cy.get('#username').type(user)
       cy.get('#password').type(pwd)
