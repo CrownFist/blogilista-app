@@ -10,10 +10,9 @@ beforeEach(async () => {
   await User.deleteMany({})
 
   await helper.savaInitialRootUser()
-})
+}, 10000)
 
 describe('when there is initially one use (root) at db', () => {
-
   test('creation fails if username already taken, statuscode 400', async () => {
     const usersAtStart = await helper.usersInDb()
 
@@ -37,7 +36,6 @@ describe('when there is initially one use (root) at db', () => {
 })
 
 describe('Creating new valid user and login', () => {
-
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
 
@@ -56,7 +54,7 @@ describe('Creating new valid user and login', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
 
-    const usernames = usersAtEnd.map(u => u.username)
+    const usernames = usersAtEnd.map((u) => u.username)
     expect(usernames).toContain(newUser.username)
   })
 
@@ -88,17 +86,15 @@ describe('Creating new valid user and login', () => {
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
-    const usernames = usersAtEnd.map(u => u.username)
+    const usernames = usersAtEnd.map((u) => u.username)
     expect(usernames).toContain(newUser.username)
     //katsotaan löytyykö token kirjautumisen vastauksesta
     // console.log(loginResponse.body.token)
     expect(loginResponse.body.token).toBeDefined()
   })
-
 })
 
 describe('Attempts to create new user with invalid values', () => {
-
   test('creation fails if password is under 3 characters long, status 400', async () => {
     const usersAtStart = await helper.usersInDb()
 
@@ -114,7 +110,9 @@ describe('Attempts to create new user with invalid values', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('password must be at least 3 characters long')
+    expect(result.body.error).toContain(
+      'password must be at least 3 characters long'
+    )
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
@@ -135,15 +133,14 @@ describe('Attempts to create new user with invalid values', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('is shorter than the minimum allowed length (3)')
+    expect(result.body.error).toContain(
+      'is shorter than the minimum allowed length (3)'
+    )
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
   })
-
 })
-
-
 
 afterAll(async () => {
   await mongoose.connection.close()
