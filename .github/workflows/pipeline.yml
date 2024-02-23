@@ -36,8 +36,10 @@ jobs:
           CYPRESS_USER: ${{secrets.CYPRESS_USER}}
           CYPRESS_PASSWORD: ${{secrets.CYPRESS_PASSWORD}}
           MONGODB_URI: ${{secrets.MONGODB_URI}}
+          TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
           PORT: ${{secrets.PORT}}
           SECRET: ${{secrets.SECRET}}
+
       - name: frontend component test
         working-directory: ./frontend
         run: npm run test
