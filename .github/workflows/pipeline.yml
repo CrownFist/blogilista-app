@@ -90,6 +90,9 @@ jobs:
           node-version: '20'
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: install frontend dependecies
+        working-directory: ./frontend
+        run: npm run build
       - name: build frontend to be served
         working-directory: ./frontend
         run: npm run build
