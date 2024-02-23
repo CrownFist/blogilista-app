@@ -9,13 +9,13 @@ primary_region = 'arn'
 [build]
 
 [env]
-  PORT = "3000" # add this where PORT matches the internal_port below
+  PORT = "3003" # add this where PORT matches the internal_port below
 
 [processes]
   app = "node index.js" # add this
 
 [http_service]
-  internal_port = 3000
+  internal_port = 3003
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
