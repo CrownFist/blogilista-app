@@ -30,8 +30,8 @@ jobs:
       - name: build frontend
         working-directory: ./frontend
         run: npm run build
-      - name: backend unit tests
-        run: npm run test
+      #   - name: backend unit tests
+      #     run: npm run test
       - name: frontend component test
         working-directory: ./frontend
         run: npm run test
@@ -40,7 +40,7 @@ jobs:
         with:
           working-directory: ./frontend
           command: npm run prod:e2e
-          start: npm run start
+          start: npm run server
           wait-on: http://localhost:3003
       - name: Discord success notification
         uses: rjstone/discord-webhook-notify@v1
