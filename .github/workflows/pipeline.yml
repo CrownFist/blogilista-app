@@ -47,6 +47,7 @@ jobs:
           CYPRESS_PASSWORD: ${{secrets.CYPRESS_PASSWORD}}
           MONGODB_URI: ${{secrets.MONGODB_URI}}
           PORT: ${{secrets.PORT}}
+          SECRET: ${{secrets.SECRET}}
 
       - name: Discord success notification
         uses: rjstone/discord-webhook-notify@v1
