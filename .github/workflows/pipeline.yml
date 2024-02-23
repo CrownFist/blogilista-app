@@ -42,6 +42,12 @@ jobs:
           command: npm run prod:e2e
           start: npm run server
           wait-on: http://localhost:3003
+        env:
+          CYPRESS_USER: ${{secrets.CYPRESS_USER}}
+          CYPRESS_PASSWORD: ${{secrets.CYPRESS_PASSWORD}}
+          MONGODB_URI: ${{secrets.MONGODB_URI}}
+          PORT: ${{secrets.PORT}}
+
       - name: Discord success notification
         uses: rjstone/discord-webhook-notify@v1
         if: success()
