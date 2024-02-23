@@ -36,7 +36,7 @@ jobs:
           CYPRESS_USER: ${{secrets.CYPRESS_USER}}
           CYPRESS_PASSWORD: ${{secrets.CYPRESS_PASSWORD}}
           MONGODB_URI: ${{secrets.MONGODB_URI}}
-          TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
+          TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_UI}}
           PORT: ${{secrets.PORT}}
           SECRET: ${{secrets.SECRET}}
 
