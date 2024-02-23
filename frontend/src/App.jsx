@@ -17,16 +17,13 @@ const App = () => {
   const [notificationType, setNotificationType] = useState('')
   //const [userId, setUserId] = useState('')
 
-
   // tällä saadaan togglablen-komponentin toiminto käyttöön addBlogissa
   const blogFormRef = useRef()
 
   //haetaan kaikki blogit ja asetetaan tilaan
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs ) )
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
-
 
   //jos käyttäjätiedot löytyy localstoragesta, asetaatn
   useEffect(() => {
@@ -40,16 +37,22 @@ const App = () => {
       //const decodedUser = jwt_decode(user.token)
       //setUserId(decodedUser.id)
     }
-
   }, [])
 
   //blogilistan muodostaminen Blog-komponenttien avulla
-  const blogList = () => (
-    blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-      <Blog key={blog.id} blog={blog} user={user} deleteBlog={deleteBlog} blogs={blogs} handleBlogLike={() => handleBlogLike(blog.id)} />
-    )
-  )
-
+  const blogList = () =>
+    blogs
+      .sort((a, b) => b.likes - a.likes)
+      .map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={user}
+          deleteBlog={deleteBlog}
+          blogs={blogs}
+          handleBlogLike={() => handleBlogLike(blog.id)}
+        />
+      ))
 
   //Blog-komponentissa poiston jälkeen kutsutaan tätä päivittämään tila blogilistalla, josta karsittu poistettu
   const deleteBlog = (blogsAfterDelete) => {
@@ -58,14 +61,14 @@ const App = () => {
 
   //Hanskataan tykkäys. ...blogToLike syntaksi = "muuten sama" mutta päivitä tykkäykset + 1
   const handleBlogLike = async (blogId) => {
-    const blogToLike = blogs.find(blog => blog.id === blogId)
+    const blogToLike = blogs.find((blog) => blog.id === blogId)
     const updatedBlog = {
       ...blogToLike,
-      likes: blogToLike.likes + 1
+      likes: blogToLike.likes + 1,
     }
     await blogService.update(blogId, updatedBlog)
     // jos blogilistan blogin id täsmää tykättyyn, korvataan blogi uuden tykkäysmäärän omaavalla blogilla
-    const updatedBlogs = blogs.map(b => b.id === blogId ? updatedBlog : b)
+    const updatedBlogs = blogs.map((b) => (b.id === blogId ? updatedBlog : b))
     setBlogs(updatedBlogs)
   }
 
@@ -76,10 +79,11 @@ const App = () => {
     //console.log('logging in with', username, password)
     try {
       const user = await loginService.login({
-        username, password,
+        username,
+        password,
       })
       //token, käyttäjän nimi ja käyttäjänimi localstorageen
-      window.localStorage.setItem( 'loggedBlogAppUser', JSON.stringify(user))
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
       //
       //const decodedUser = await jwt_decode(user.token)
@@ -111,12 +115,13 @@ const App = () => {
       setBlogs(blogs.concat(newBlog))
       console.log('creation succesfull: ', newBlog)
       setNotificationType('success')
-      setNotification('a new blog '+ newBlog.title + ' by '+ newBlog.author + ' added')
+      setNotification(
+        'a new blog ' + newBlog.title + ' by ' + newBlog.author + ' added'
+      )
       setTimeout(() => {
         setNotification('')
         setNotificationType('')
       }, 5000)
-
     } catch (exception) {
       setNotification('error occured when creating new blog')
       setNotificationType('error')
@@ -129,37 +134,47 @@ const App = () => {
 
   return (
     <>
-      {!user &&  <div>
-        <h2>log in to application</h2>
-        <Notification
-          notification={notification}
-          notificationType={notificationType}
-        />
-        <LoginForm
-          handleLogin={handleLogin}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          username={username}
-          password={password}
-        />
-      </div>
-      }
-
-      {user && <div>
-        <h2>blogs</h2>
-        <Notification
-          notification={notification}
-          notificationType={notificationType}
-        />
-        <p>{user.name} logged in <button onClick={handleLogout} type='logout' id='logout-button'>logout</button></p>
-        <Togglable buttonLabelShow='create new blog' buttonLabelHide='cancel' ref={blogFormRef}>
-          <BlogForm
-            createBlog={addBlog}
+      {!user && (
+        <div>
+          <h1>Bloglist app</h1>
+          <h2>log in to application</h2>
+          <Notification
+            notification={notification}
+            notificationType={notificationType}
           />
-        </Togglable>
-        {blogList()}
-      </div>
-      }
+          <LoginForm
+            handleLogin={handleLogin}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            username={username}
+            password={password}
+          />
+        </div>
+      )}
+
+      {user && (
+        <div>
+          <h2>blogs</h2>
+          <Notification
+            notification={notification}
+            notificationType={notificationType}
+          />
+          <p>
+            {user.name} logged in{' '}
+            <button onClick={handleLogout} type='logout' id='logout-button'>
+              logout
+            </button>
+          </p>
+          <Togglable
+            buttonLabelShow='create new blog'
+            buttonLabelHide='cancel'
+            ref={blogFormRef}
+          >
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          {blogList()}
+        </div>
+      )}
     </>
   )
 }
