@@ -30,8 +30,14 @@ jobs:
       - name: build frontend
         working-directory: ./frontend
         run: npm run build
-      #   - name: backend unit tests
-      #     run: npm run test
+      - name: backend unit tests
+        run: npm run test
+        env:
+          CYPRESS_USER: ${{secrets.CYPRESS_USER}}
+          CYPRESS_PASSWORD: ${{secrets.CYPRESS_PASSWORD}}
+          MONGODB_URI: ${{secrets.MONGODB_URI}}
+          PORT: ${{secrets.PORT}}
+          SECRET: ${{secrets.SECRET}}
       - name: frontend component test
         working-directory: ./frontend
         run: npm run test
