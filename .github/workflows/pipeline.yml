@@ -92,7 +92,7 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: install frontend dependecies
         working-directory: ./frontend
-        run: npm run build
+        run: npm install
       - name: build frontend to be served
         working-directory: ./frontend
         run: npm run build
