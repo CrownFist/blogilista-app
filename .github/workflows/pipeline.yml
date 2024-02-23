@@ -40,9 +40,7 @@ jobs:
         with:
           working-directory: ./frontend
           command: npm run prod:e2e
-          start: |
-            cd ..
-            npm run start
+          start: npm run start
           wait-on: http://localhost:3003
       - name: Discord success notification
         uses: rjstone/discord-webhook-notify@v1
