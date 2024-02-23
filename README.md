@@ -1,1 +1,1 @@
-This is the bloglist app with CI/CD pipeline.
+This is the bloglist app with CI/CD pipeline
