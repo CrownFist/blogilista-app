@@ -64,7 +64,7 @@ jobs:
           username: ActionCat
           avatarUrl: https://octodex.github.com/images/Professortocat_v2.png
           color: '#77fc03'
-          description: The build was successful.
+          description: The bloglist build was successful.
           footer: 'Severity: Info'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Discord error notification
@@ -74,7 +74,7 @@ jobs:
           username: ActionCat
           color: '#b50b2d'
           avatarUrl: https://octodex.github.com/images/Professortocat_v2.png
-          description: 'The build failed.'
+          description: 'The bloglist build failed.'
           details: 'Commit SHA: ${{ github.sha }}'
           footer: 'Severity: Error'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
@@ -108,7 +108,8 @@ jobs:
           username: ActionCat
           color: '#77fc03'
           avatarUrl: https://octodex.github.com/images/Professortocat_v2.png
-          description: The pokedex deployment was successful. Explore the app at fly.io
+          description: The bloglist deployment was successful.
+          details: 'https://blogilista-app-mikkomallikas.fly.dev/'
           footer: 'Severity: Info'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Discord fail notification
@@ -118,13 +119,13 @@ jobs:
           username: ActionCat
           color: '#b50b2d'
           avatarUrl: https://octodex.github.com/images/Professortocat_v2.png
-          description: 'The pokedex deployment was not successful'
+          description: 'The bloglist deployment was not successful'
           details: 'Commit SHA: ${{ github.sha }}'
           footer: 'Severity: Info'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
     name: Tag release
-    needs: [build]
+    needs: [deploy]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-20.04
     permissions:
